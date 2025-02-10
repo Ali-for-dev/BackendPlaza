@@ -1,6 +1,6 @@
 // backend/controllers/authController.js
 const User = require('../models/User');
-const ErrorHandler = require('../utils/ErrorHandler');
+const ErrorHandler = require('../utils/errorHandler');
 const catchAsyncErrors = require('../middlewares/catchAsyncErrors');
 
 // Register a user => /api/v1/auth/register

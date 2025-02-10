@@ -1,7 +1,7 @@
 // backend/middlewares/auth.js
 const jwt = require('jsonwebtoken');
 const User = require('../models/User');
-const ErrorHandler = require('../utils/ErrorHandler');
+const ErrorHandler = require('../utils/errorHandler');
 const catchAsyncErrors = require('./catchAsyncErrors');
 
 // Check if user is authenticated
