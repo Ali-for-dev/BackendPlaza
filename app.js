@@ -9,11 +9,18 @@ const errorMiddleware = require('./middlewares/error');
 
 const app = express();
 
+// CORS configuration - this should come first
+app.use(cors({
+    origin: 'http://localhost:5173',
+    credentials: true,
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization']
+}));
+
 // Middleware
 app.use(express.json());
 app.use(cookieParser());
 app.use(helmet());
-app.use(cors());
 app.use(morgan('dev'));
 
 // Rate limiting
@@ -32,7 +39,10 @@ const users = require('./routes/user.routes');
 // Mount routes
 app.use('/api/v1/auth', auth);
 app.use('/api/v1', products);
+app.use('/api/v1', orders);
+app.use('/uploads', express.static('uploads'));
+
 // Error Middleware
-app.use(errorMiddleware); 
+app.use(errorMiddleware);
 
 module.exports = app;

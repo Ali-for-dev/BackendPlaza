@@ -47,11 +47,9 @@ const userSchema = new mongoose.Schema({
         },
         state: {
             type: String,
-            required: [true, 'Please enter state']
         },
         zipCode: {
             type: String,
-            required: [true, 'Please enter zip code']
         }
     },
     createdAt: {

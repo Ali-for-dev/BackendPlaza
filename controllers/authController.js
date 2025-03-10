@@ -1,5 +1,5 @@
-// backend/controllers/authController.js
 const User = require('../models/User');
+const jwt = require('jsonwebtoken');
 const ErrorHandler = require('../utils/errorHandler');
 const catchAsyncErrors = require('../middlewares/catchAsyncErrors');
 
@@ -48,18 +48,24 @@ exports.loginUser = catchAsyncErrors(async (req, res, next) => {
         return next(new ErrorHandler('Invalid Email or Password', 401));
     }
 
-    const token = user.getJwtToken();
+    // Create JWT Token
+    const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
+        expiresIn: process.env.JWT_EXPIRES_TIME
+    });
 
-    // Options for cookie
-    const options = {
+    // Set cookie options
+    const cookieOptions = {
         expires: new Date(
             Date.now() + process.env.COOKIE_EXPIRES_TIME * 24 * 60 * 60 * 1000
         ),
-        httpOnly: true
+        httpOnly: true,
+        secure: process.env.NODE_ENV === 'production',
+        sameSite: 'lax',
+        path: '/'
     };
 
     res.status(200)
-        .cookie('token', token, options)
+        .cookie('token', token, cookieOptions)
         .json({
             success: true,
             token,
